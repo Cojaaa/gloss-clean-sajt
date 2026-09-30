@@ -3,26 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gloss Clean - Dubinsko Čišćenje</title>
+    <title>Gloss Clean - Zakazivanje</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #121212; color: white; padding: 20px; max-width: 500px; margin: auto; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0b0e14; color: white; padding: 20px; max-width: 500px; margin: auto; }
         .logo-container { text-align: center; margin-bottom: 20px; }
-        .logo-container img { max-width: 220px; height: auto; border-radius: 50%; border: 2px solid #00d4ff; box-shadow: 0 0 15px rgba(0, 212, 255, 0.4); }
-        h1, h2, h3 { text-align: center; }
-        .slogan { text-align: center; font-style: italic; color: #00d4ff; margin-top: -10px; margin-bottom: 20px; }
-        .cenovnik-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; }
-        label { display: block; margin-top: 15px; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; background-color: #222; color: white; border: 1px solid #444; border-radius: 5px; }
-        .termini { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-        .termin { padding: 10px; background-color: #333; border: 1px solid #555; cursor: pointer; border-radius: 5px; text-align: center; flex: 1 1 28%; }
-        .termin.selekcija { background-color: #00d4ff; border-color: #008cb3; color: #000; font-weight: bold; }
-        .termin.zauzet { background-color: #555; text-decoration: line-through; cursor: not-allowed; opacity: 0.5; }
-        button { width: 100%; padding: 12px; margin-top: 20px; background-color: #00d4ff; color: #000; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; }
-        button:hover { background-color: #00a0c6; }
-        .hr { border-bottom: 1px solid #333; margin: 25px 0; }
-        .recenzija-card { background: #222; padding: 12px; border-radius: 5px; margin-bottom: 10px; border: 1px solid #333; }
-        .recenzija-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; }
-        .zvezdice { color: #ffc107; }
+        .logo-container img { max-width: 200px; height: auto; border-radius: 50%; border: 2px solid #00d4ff; box-shadow: 0 0 15px rgba(0, 212, 255, 0.3); }
+        h1, h2, h3 { text-align: center; margin-bottom: 20px; }
+        .slogan { text-align: center; font-style: italic; color: #00d4ff; margin-top: -15px; margin-bottom: 25px; }
+        
+        .card { background-color: #121824; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .card-title { font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #38bdf8; margin-bottom: 15px; }
+
+        /* Stil za opcije usluga (checkbox kartice) */
+        .usluga-option { display: flex; align-items: center; background-color: #1a2234; border: 1px solid #2a364f; padding: 14px 16px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .usluga-option:hover { border-color: #38bdf8; background-color: #212c42; }
+        .usluga-option input[type="checkbox"] { width: 18px; height: 18px; margin-right: 12px; accent-color: #38bdf8; cursor: pointer; }
+        .usluga-text { font-size: 15px; font-weight: 500; color: #f1f5f9; }
+
+        label { display: block; margin-top: 15px; font-weight: bold; font-size: 14px; color: #94a3b8; }
+        input, textarea { width: 100%; padding: 12px; margin-top: 6px; box-sizing: border-box; background-color: #1a2234; color: white; border: 1px solid #2a364f; border-radius: 8px; font-size: 14px; }
+        input:focus, textarea:focus { border-color: #38bdf8; outline: none; }
+        
+        .termini { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .termin { padding: 10px; background-color: #1a2234; border: 1px solid #2a364f; cursor: pointer; border-radius: 8px; text-align: center; flex: 1 1 28%; font-size: 14px; }
+        .termin.selekcija { background-color: #38bdf8; border-color: #0284c7; color: #000; font-weight: bold; }
+        .termin.zauzet { background-color: #334155; text-decoration: line-through; cursor: not-allowed; opacity: 0.4; }
+        
+        button { width: 100%; padding: 14px; margin-top: 20px; background-color: #38bdf8; color: #0f172a; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; transition: background-color 0.2s; }
+        button:hover { background-color: #0284c7; color: white; }
+
+        .recenzija-card { background: #1a2234; padding: 14px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #2a364f; }
+        .recenzija-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 6px; }
+        .zvezdice { color: #fbbf24; }
     </style>
 </head>
 <body>
@@ -34,63 +46,69 @@
     <h1>Gloss Clean</h1>
     <p class="slogan">Čisto. Sveže. Kao novo.</p>
 
-    <h2>Cenovnik</h2>
-    <div class="cenovnik-item"><span>Sofa / Trosed</span> <span>3500 RSD</span></div>
-    <div class="cenovnik-item"><span>Ugaona garnitura</span> <span>5000 RSD</span></div>
-    <div class="cenovnik-item"><span>Fotelja</span> <span>1800 RSD</span></div>
-    <div class="cenovnik-item"><span>Dušek (bračni)</span> <span>3000 RSD</span></div>
-    <div class="cenovnik-item"><span>Auto sedišta</span> <span>4000 RSD</span></div>
-    <div class="cenovnik-item"><span>Tepisi (po m²)</span> <span>300 RSD</span></div>
+    <div class="card">
+        <div class="card-title">1. Izaberite uslugu (možete više)</div>
+        
+        <label class="usluga-option">
+            <input type="checkbox" name="usluga" value="Obično Pranje & Usisavanje">
+            <span class="usluga-text">Obično Pranje & Usisavanje</span>
+        </label>
 
-    <div class="hr"></div>
+        <label class="usluga-option">
+            <input type="checkbox" name="usluga" value="Dubinsko Pranje">
+            <span class="usluga-text">Dubinsko Pranje</span>
+        </label>
 
-    <h2>Zakazivanje</h2>
+        <label class="usluga-option">
+            <input type="checkbox" name="usluga" value="Detailing + Dubinsko Pranje">
+            <span class="usluga-text">Detailing + Dubinsko Pranje</span>
+        </label>
 
-    <label>Ime i prezime:</label>
-    <input type="text" id="ime" placeholder="Vaše ime">
-
-    <label>Broj telefona:</label>
-    <input type="text" id="telefon" placeholder="06x xxx xxxx">
-
-    <label>Usluga:</label>
-    <select id="usluga">
-        <option value="Sofa / Trosed (3500 RSD)">Sofa / Trosed (3500 RSD)</option>
-        <option value="Ugaona garnitura (5000 RSD)">Ugaona garnitura (5000 RSD)</option>
-        <option value="Fotelja (1800 RSD)">Fotelja (1800 RSD)</option>
-        <option value="Dušek bračni (3000 RSD)">Dušek bračni (3000 RSD)</option>
-        <option value="Auto sedišta (4000 RSD)">Auto sedišta (4000 RSD)</option>
-        <option value="Tepisi">Tepisi</option>
-    </select>
-
-    <label>Datum:</label>
-    <input type="date" id="datum" onchange="ucitajTermine()">
-
-    <label>Izaberite termin:</label>
-    <div class="termini" id="termini-container">
-        <p style="color: #aaa; text-align: center; width: 100%;">Izaberite datum iznad</p>
+        <label class="usluga-option">
+            <input type="checkbox" name="usluga" value="Poliranje Farova">
+            <span class="usluga-text">Poliranje Farova</span>
+        </label>
     </div>
 
-    <button onclick="rezervisi()">Potvrdi rezervaciju</button>
+    <div class="card">
+        <div class="card-title">2. Podaci za zakazivanje</div>
 
-    <div class="hr"></div>
+        <label>Ime i prezime:</label>
+        <input type="text" id="ime" placeholder="Vaše ime">
 
-    <h2>Utisci klijenata</h2>
-    <div id="recenzije-lista">
-        <p style="color: #aaa; text-align: center;">Učitavanje recenzija...</p>
+        <label>Broj telefona:</label>
+        <input type="text" id="telefon" placeholder="06x xxx xxxx">
+
+        <label>Datum:</label>
+        <input type="date" id="datum" onchange="ucitajTermine()">
+
+        <label>Izaberite termin:</label>
+        <div class="termini" id="termini-container">
+            <p style="color: #64748b; text-align: center; width: 100%; font-size: 13px;">Izaberite datum iznad</p>
+        </div>
+
+        <button onclick="rezervisi()">Potvrdi rezervaciju</button>
     </div>
 
-    <h3>Ostavite recenziju</h3>
-    <input type="text" id="rec-ime" placeholder="Vaše ime">
-    <label>Ocena:</label>
-    <select id="rec-ocena">
-        <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
-        <option value="4">⭐⭐⭐⭐ (4/5)</option>
-        <option value="3">⭐⭐⭐ (3/5)</option>
-        <option value="2">⭐⭐ (2/5)</option>
-        <option value="1">⭐ (1/5)</option>
-    </select>
-    <textarea id="rec-komentar" rows="3" placeholder="Vaš komentar..."></textarea>
-    <button onclick="ostaviRecenziju()">Pošalji recenziju</button>
+    <div class="card">
+        <div class="card-title">Utisci klijenata</div>
+        <div id="recenzije-lista">
+            <p style="color: #64748b; text-align: center; font-size: 13px;">Učitavanje recenzija...</p>
+        </div>
+
+        <h3 style="font-size: 15px; margin-top: 20px; text-align: left;">Ostavite recenziju</h3>
+        <input type="text" id="rec-ime" placeholder="Vaše ime">
+        <label>Ocena:</label>
+        <select id="rec-ocena" style="width:100%; padding:12px; margin-top:6px; background:#1a2234; color:white; border:1px solid #2a364f; border-radius:8px;">
+            <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+            <option value="4">⭐⭐⭐⭐ (4/5)</option>
+            <option value="3">⭐⭐⭐ (3/5)</option>
+            <option value="2">⭐⭐ (2/5)</option>
+            <option value="1">⭐ (1/5)</option>
+        </select>
+        <textarea id="rec-komentar" rows="3" placeholder="Vaš komentar..."></textarea>
+        <button onclick="ostaviRecenziju()">Pošalji recenziju</button>
+    </div>
 
 <script>
     let izabraniTermin = null;
@@ -130,18 +148,30 @@
     async function rezervisi() {
         const ime = document.getElementById('ime').value;
         const telefon = document.getElementById('telefon').value;
-        const usluga = document.getElementById('usluga').value;
         const datum = document.getElementById('datum').value;
+
+        // Prikupljanje svih štikliranih usluga
+        const izabraneUsluge = [];
+        document.querySelectorAll('input[name="usluga"]:checked').forEach(cb => {
+            izabraneUsluge.push(cb.value);
+        });
+
+        if (izabraneUsluge.length === 0) {
+            alert("Molimo izaberite bar jednu uslugu.");
+            return;
+        }
 
         if (!ime || !telefon || !datum || !izabraniTermin) {
             alert("Popunite sva polja i izaberite termin.");
             return;
         }
 
+        const uslugaText = izabraneUsluge.join(", ");
+
         const res = await fetch('/rezervisi', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ime, telefon, usluga, datum, vreme: izabraniTermin })
+            body: JSON.stringify({ ime, telefon, usluga: uslugaText, datum, vreme: izabraniTermin })
         });
 
         const data = await res.json();
@@ -156,7 +186,7 @@
         container.innerHTML = "";
 
         if (recenzije.length === 0) {
-            container.innerHTML = '<p style="color: #aaa; text-align: center;">Nema recenzija. Budi prvi!</p>';
+            container.innerHTML = '<p style="color: #64748b; text-align: center; font-size: 13px;">Nema recenzija. Budi prvi!</p>';
             return;
         }
 
@@ -168,7 +198,7 @@
                     <span>${r.ime}</span>
                     <span class="zvezdice">${'⭐'.repeat(r.ocena)}</span>
                 </div>
-                <div style="color: #ddd;">"${r.komentar}"</div>
+                <div style="color: #cbd5e1; font-size: 14px;">"${r.komentar}"</div>
             `;
             container.appendChild(div);
         });
