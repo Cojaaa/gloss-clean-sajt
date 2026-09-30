@@ -50,23 +50,38 @@
         <div class="card-title">1. Izaberite uslugu (možete više)</div>
         
         <label class="usluga-option">
-            <input type="checkbox" name="usluga" value="Obično Pranje & Usisavanje">
-            <span class="usluga-text">Obično Pranje & Usisavanje</span>
+            <input type="checkbox" name="usluga" value="Ugaona garnitura">
+            <span class="usluga-text">Ugaona garnitura</span>
         </label>
 
         <label class="usluga-option">
-            <input type="checkbox" name="usluga" value="Dubinsko Pranje">
-            <span class="usluga-text">Dubinsko Pranje</span>
+            <input type="checkbox" name="usluga" value="Stolica">
+            <span class="usluga-text">Stolica</span>
         </label>
 
         <label class="usluga-option">
-            <input type="checkbox" name="usluga" value="Detailing + Dubinsko Pranje">
-            <span class="usluga-text">Detailing + Dubinsko Pranje</span>
+            <input type="checkbox" name="usluga" value="Tepih">
+            <span class="usluga-text">Tepih</span>
         </label>
 
         <label class="usluga-option">
-            <input type="checkbox" name="usluga" value="Poliranje Farova">
-            <span class="usluga-text">Poliranje Farova</span>
+            <input type="checkbox" name="usluga" value="Dvosed">
+            <span class="usluga-text">Dvosed</span>
+        </label>
+
+        <label class="usluga-option">
+            <input type="checkbox" name="usluga" value="Trosed">
+            <span class="usluga-text">Trosed</span>
+        </label>
+
+        <label class="usluga-option">
+            <input type="checkbox" name="usluga" value="Bračni krevet">
+            <span class="usluga-text">Bračni krevet</span>
+        </label>
+
+        <label class="usluga-option">
+            <input type="checkbox" name="usluga" value="Ostalo">
+            <span class="usluga-text">Ostalo</span>
         </label>
     </div>
 
@@ -150,7 +165,6 @@
         const telefon = document.getElementById('telefon').value;
         const datum = document.getElementById('datum').value;
 
-        // Prikupljanje svih štikliranih usluga
         const izabraneUsluge = [];
         document.querySelectorAll('input[name="usluga"]:checked').forEach(cb => {
             izabraneUsluge.push(cb.value);
