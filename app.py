@@ -30,18 +30,20 @@ def sacuvaj_podatke(fajl, podaci):
 
 
 def posalji_u_whatsapp_grupu(tekst_poruke):
-  """Šalje poruku direktno u WhatsApp grupu"""
-  # Ispravljen host na 7107.api.greenapi.com
+  """Šalje poruku direktno u WhatsApp grupu sa detaljnim ispisom odgovora"""
   url = f"https://7107.api.greenapi.com/waInstance{ID_INSTANCE}/sendMessage/{API_TOKEN}"
   payload = {"chatId": GROUP_ID, "message": tekst_poruke}
   headers = {"Content-Type": "application/json"}
 
+  print(f"--- ŠALJEM PORUKU NA: {url} ---")
+  print(f"--- PAYLOAD: {payload} ---")
+
   try:
     res = requests.post(url, json=payload, headers=headers, timeout=10)
-    print(f"Green API status code: {res.status_code}")
-    print(f"Green API response: {res.text}")
+    print(f"=== GREEN API STATUS: {res.status_code} ===")
+    print(f"=== GREEN API RESPONSE: {res.text} ===")
   except Exception as e:
-    print(f"Greška pri slanju WhatsApp poruke: {e}")
+    print(f"=== GREŠKA PRI SLANJU PORUKE: {e} ===")
 
 
 @app.route("/")
@@ -98,6 +100,8 @@ def rezervisi():
       f"📅 Datum: {datum}\n"
       f"⏰ Termin: {vreme}"
   )
+
+  # Pozivamo funkciju za slanje
   posalji_u_whatsapp_grupu(poruka_za_grupu)
 
   return jsonify({"poruka": "Uspešno ste rezervisali termin!"})
