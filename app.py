@@ -1,111 +1,128 @@
-from flask import Flask, render_template, request, jsonify
 import json
 import os
-import urllib.parse
-import urllib.request
+import requests
+from flask import Flask, jsonify, render_template, request
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+app = Flask(__name__)
 
-app = Flask(__name__, template_folder=TEMPLATE_DIR)
+# --- GREEN API PODEŠAVANJA ---
+ID_INSTANCE = "710722751720"
+API_TOKEN = "51cab856f6da43c1aa1751a09221bf11"
+GROUP_ID = "120363429949318594@g.us"
 
-TELEGRAM_BOT_TOKEN = "8660458192:AAGrvs0QwgyMMnDN99MyPJLvbnK-dTK1o-U"
-TELEGRAM_CHAT_ID = "5273881275"
+FAJL_REZERVACIJE = "rezervacije.json"
+FAJL_RECENZIJE = "recenzije.json"
 
-DB_FILE = os.path.join(BASE_DIR, "rezervacije.json")
-RECENZIJE_FILE = os.path.join(BASE_DIR, "recenzije.json")
-
-def posalji_telegram_poruku(tekst):
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    data = urllib.parse.urlencode({'chat_id': TELEGRAM_CHAT_ID, "text": tekst, "parse_mode": "Markdown"}).encode("utf-8")
-    try:
-        req = urllib.request.Request(url, data=data)
-        urllib.request.urlopen(req)
-    except Exception as e:
-        print(f"Greška pri slanju na Telegram: {e}")
 
 def ucitaj_podatke(fajl):
-    if os.path.exists(fajl):
-        with open(fajl, "r", encoding="utf-8") as f:
-            try:
-                return json.load(f)
-            except Exception:
-                return []
+  if not os.path.exists(fajl):
     return []
+  with open(fajl, "r", encoding="utf-8") as f:
+    try:
+      return json.load(f)
+    except Exception:
+      return []
+
 
 def sacuvaj_podatke(fajl, podaci):
-    with open(fajl, "w", encoding="utf-8") as f:
-        json.dump(podaci, f, ensure_ascii=False, indent=4)
+  with open(fajl, "w", encoding="utf-8") as f:
+    json.dump(podaci, f, ensure_ascii=False, indent=4)
+
+
+def posalji_u_whatsapp_grupu(tekst_poruke):
+  """Šalje poruku direktno u WhatsApp grupu"""
+  url = f"https://api.green-api.com/waInstance{ID_INSTANCE}/sendMessage/{API_TOKEN}"
+  payload = {"chatId": GROUP_ID, "message": tekst_poruke}
+  headers = {"Content-Type": "application/json"}
+
+  try:
+    requests.post(url, json=payload, timeout=5)
+  except Exception as e:
+    print(f"Greška pri slanju WhatsApp poruke: {e}")
+
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+  return render_template("index.html")
+
 
 @app.route("/zauzeti-termini", methods=["GET"])
 def zauzeti_termini():
-    datum = request.args.get("datum")
-    rezervacije = ucitaj_podatke(DB_FILE)
-    zauzeti = [r["vreme"] for r in rezervacije if r.get("datum") == datum]
-    return jsonify(zauzeti)
+  datum = request.args.get("datum")
+  rezervacije = ucitaj_podatke(FAJL_REZERVACIJE)
+  zauzeti = [r["vreme"] for r in rezervacije if r.get("datum") == datum]
+  return jsonify(zauzeti)
+
 
 @app.route("/rezervisi", methods=["POST"])
 def rezervisi():
-    data = request.json or {}
-    ime = data.get("ime")
-    telefon = data.get("telefon")
-    usluga = data.get("usluga")
-    datum = data.get("datum")
-    vreme = data.get("vreme")
+  podaci = request.get_json()
+  ime = podaci.get("ime")
+  telefon = podaci.get("telefon")
+  usluga = podaci.get("usluga")
+  datum = podaci.get("datum")
+  vreme = podaci.get("vreme")
 
-    if not all([ime, telefon, usluga, datum, vreme]):
-        return jsonify({"status": "error", "poruka": "Molimo popunite sva polja."}), 400
+  if not all([ime, telefon, usluga, datum, vreme]):
+    return jsonify({"poruka": "Molimo popunite sva polja!"}), 400
 
-    rezervacije = ucitaj_podatke(DB_FILE)
+  rezervacije = ucitaj_podatke(FAJL_REZERVACIJE)
 
-    for r in rezervacije:
-        if r.get("datum") == datum and r.get("vreme") == vreme:
-            return jsonify({"status": "error", "poruka": "Termin je već zauzet!"}), 400
+  for r in rezervacije:
+    if r.get("datum") == datum and r.get("vreme") == vreme:
+      return (
+          jsonify({"poruka": "Ovaj termin je u međuvremenu zauzet!"}),
+          400,
+      )
 
-    nova_rezervacija = {
-        "ime": ime,
-        "telefon": telefon,
-        "usluga": usluga,
-        "datum": datum,
-        "vreme": vreme
-    }
-    rezervacije.append(nova_rezervacija)
-    sacuvaj_podatke(DB_FILE, rezervacije)
+  nova_rezervacija = {
+      "ime": ime,
+      "telefon": telefon,
+      "usluga": usluga,
+      "datum": datum,
+      "vreme": vreme,
+  }
 
-    poruka = f"✨ *GLOSS CLEAN - NOVA REZERVACIJA!*\n\n👤 *Ime:* {ime}\n📞 *Telefon:* {telefon}\n🛋 *Usluga:* {usluga}\n📅 *Datum:* {datum}\n⏰ *Vreme:* {vreme}"
-    posalji_telegram_poruku(poruka)
+  rezervacije.append(nova_rezervacija)
+  sacuvaj_podatke(FAJL_REZERVACIJE, rezervacije)
 
-    return jsonify({"status": "success", "poruka": "Uspešno ste rezervisali termin!"})
+  # Formiranje i slanje poruke u WhatsApp grupu
+  poruka_za_grupu = (
+      f"🚨 NOVA REZERVACIJA! 🚨\n\n"
+      f"👤 Klijent: {ime}\n"
+      f"📞 Telefon: {telefon}\n"
+      f"🛠️️ Usluga: {usluga}\n"
+      f"📅 Datum: {datum}\n"
+      f"⏰ Termin: {vreme}"
+  )
+  posalji_u_whatsapp_grupu(poruka_za_grupu)
+
+  return jsonify({"poruka": "Uspešno ste rezervisali termin!"})
+
 
 @app.route("/recenzije", methods=["GET"])
-def preuzmi_recenzije():
-    recenzije = ucitaj_podatke(RECENZIJE_FILE)
-    return jsonify(recenzije)
+def recenzije():
+  return jsonify(ucitaj_podatke(FAJL_RECENZIJE))
+
 
 @app.route("/ostavi-recenziju", methods=["POST"])
 def ostavi_recenziju():
-    data = request.json or {}
-    ime = data.get("ime")
-    ocena = data.get("ocena")
-    komentar = data.get("komentar")
+  podaci = request.get_json()
+  ime = podaci.get("ime")
+  ocena = podaci.get("ocena")
+  komentar = podaci.get("komentar")
 
-    if not ime or not ocena or not komentar:
-        return jsonify({"status": "error", "poruka": "Molimo popunite sva polja."}), 400
+  if not all([ime, ocena, komentar]):
+    return jsonify({"poruka": "Popunite sva polja za recenziju!"}), 400
 
-    recenzije = ucitaj_podatke(RECENZIJE_FILE)
-    nova_recenzija = {"ime": ime, "ocena": int(ocena), "komentar": komentar}
-    recenzije.insert(0, nova_recenzija)
-    sacuvaj_podatke(RECENZIJE_FILE, recenzije)
+  sve_recenzije = ucitaj_podatke(FAJL_RECENZIJE)
+  sve_recenzije.insert(
+      0, {"ime": ime, "ocena": int(ocena), "komentar": komentar}
+  )
+  sacuvaj_podatke(FAJL_RECENZIJE, sve_recenzije)
 
-    zvezdice = "⭐" * int(ocena)
-    poruka = f"💬 *GLOSS CLEAN - NOVA RECENZIJA!*\n\n👤 *Ime:* {ime}\n⭐ *Ocena:* {zvezdice} ({ocena}/5)\n📝 *Komentar:* {komentar}"
-    posalji_telegram_poruku(poruka)
+  return jsonify({"poruka": "Hvala na recenziji!"})
 
-    return jsonify({"status": "success", "poruka": "Hvala na recenziji!"})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+  app.run(debug=True)
