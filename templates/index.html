@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gloss Clean - Dubinsko Čišćenje</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #121212; color: white; padding: 20px; max-width: 500px; margin: auto; }
+        .logo-container { text-align: center; margin-bottom: 20px; }
+        .logo-container img { max-width: 220px; height: auto; border-radius: 50%; border: 2px solid #00d4ff; box-shadow: 0 0 15px rgba(0, 212, 255, 0.4); }
+        h1, h2, h3 { text-align: center; }
+        .slogan { text-align: center; font-style: italic; color: #00d4ff; margin-top: -10px; margin-bottom: 20px; }
+        .cenovnik-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; background-color: #222; color: white; border: 1px solid #444; border-radius: 5px; }
+        .termini { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        .termin { padding: 10px; background-color: #333; border: 1px solid #555; cursor: pointer; border-radius: 5px; text-align: center; flex: 1 1 28%; }
+        .termin.selekcija { background-color: #00d4ff; border-color: #008cb3; color: #000; font-weight: bold; }
+        .termin.zauzet { background-color: #555; text-decoration: line-through; cursor: not-allowed; opacity: 0.5; }
+        button { width: 100%; padding: 12px; margin-top: 20px; background-color: #00d4ff; color: #000; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #00a0c6; }
+        .hr { border-bottom: 1px solid #333; margin: 25px 0; }
+        .recenzija-card { background: #222; padding: 12px; border-radius: 5px; margin-bottom: 10px; border: 1px solid #333; }
+        .recenzija-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 5px; }
+        .zvezdice { color: #ffc107; }
+    </style>
+</head>
+<body>
+
+    <div class="logo-container">
+        <img src="/static/logo.png" alt="Gloss Clean Logo">
+    </div>
+
+    <h1>Gloss Clean</h1>
+    <p class="slogan">Čisto. Sveže. Kao novo.</p>
+
+    <h2>Cenovnik</h2>
+    <div class="cenovnik-item"><span>Sofa / Trosed</span> <span>3500 RSD</span></div>
+    <div class="cenovnik-item"><span>Ugaona garnitura</span> <span>5000 RSD</span></div>
+    <div class="cenovnik-item"><span>Fotelja</span> <span>1800 RSD</span></div>
+    <div class="cenovnik-item"><span>Dušek (bračni)</span> <span>3000 RSD</span></div>
+    <div class="cenovnik-item"><span>Auto sedišta</span> <span>4000 RSD</span></div>
+    <div class="cenovnik-item"><span>Tepisi (po m²)</span> <span>300 RSD</span></div>
+
+    <div class="hr"></div>
+
+    <h2>Zakazivanje</h2>
+
+    <label>Ime i prezime:</label>
+    <input type="text" id="ime" placeholder="Vaše ime">
+
+    <label>Broj telefona:</label>
+    <input type="text" id="telefon" placeholder="06x xxx xxxx">
+
+    <label>Usluga:</label>
+    <select id="usluga">
+        <option value="Sofa / Trosed (3500 RSD)">Sofa / Trosed (3500 RSD)</option>
+        <option value="Ugaona garnitura (5000 RSD)">Ugaona garnitura (5000 RSD)</option>
+        <option value="Fotelja (1800 RSD)">Fotelja (1800 RSD)</option>
+        <option value="Dušek bračni (3000 RSD)">Dušek bračni (3000 RSD)</option>
+        <option value="Auto sedišta (4000 RSD)">Auto sedišta (4000 RSD)</option>
+        <option value="Tepisi">Tepisi</option>
+    </select>
+
+    <label>Datum:</label>
+    <input type="date" id="datum" onchange="ucitajTermine()">
+
+    <label>Izaberite termin:</label>
+    <div class="termini" id="termini-container">
+        <p style="color: #aaa; text-align: center; width: 100%;">Izaberite datum iznad</p>
+    </div>
+
+    <button onclick="rezervisi()">Potvrdi rezervaciju</button>
+
+    <div class="hr"></div>
+
+    <h2>Utisci klijenata</h2>
+    <div id="recenzije-lista">
+        <p style="color: #aaa; text-align: center;">Učitavanje recenzija...</p>
+    </div>
+
+    <h3>Ostavite recenziju</h3>
+    <input type="text" id="rec-ime" placeholder="Vaše ime">
+    <label>Ocena:</label>
+    <select id="rec-ocena">
+        <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+        <option value="4">⭐⭐⭐⭐ (4/5)</option>
+        <option value="3">⭐⭐⭐ (3/5)</option>
+        <option value="2">⭐⭐ (2/5)</option>
+        <option value="1">⭐ (1/5)</option>
+    </select>
+    <textarea id="rec-komentar" rows="3" placeholder="Vaš komentar..."></textarea>
+    <button onclick="ostaviRecenziju()">Pošalji recenziju</button>
+
+<script>
+    let izabraniTermin = null;
+    const sviTermini = ["09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00"];
+
+    document.getElementById('datum').min = new Date().toISOString().split('T')[0];
+
+    async function ucitajTermine() {
+        const datum = document.getElementById('datum').value;
+        const container = document.getElementById('termini-container');
+        container.innerHTML = "";
+        izabraniTermin = null;
+
+        if (!datum) return;
+
+        const res = await fetch(`/zauzeti-termini?datum=${datum}`);
+        const zauzeti = await res.json();
+
+        sviTermini.forEach(t => {
+            const div = document.createElement('div');
+            div.className = 'termin';
+            div.innerText = t;
+
+            if (zauzeti.includes(t)) {
+                div.classList.add('zauzet');
+            } else {
+                div.onclick = () => {
+                    document.querySelectorAll('.termin').forEach(el => el.classList.remove('selekcija'));
+                    div.classList.add('selekcija');
+                    izabraniTermin = t;
+                };
+            }
+            container.appendChild(div);
+        });
+    }
+
+    async function rezervisi() {
+        const ime = document.getElementById('ime').value;
+        const telefon = document.getElementById('telefon').value;
+        const usluga = document.getElementById('usluga').value;
+        const datum = document.getElementById('datum').value;
+
+        if (!ime || !telefon || !datum || !izabraniTermin) {
+            alert("Popunite sva polja i izaberite termin.");
+            return;
+        }
+
+        const res = await fetch('/rezervisi', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ime, telefon, usluga, datum, vreme: izabraniTermin })
+        });
+
+        const data = await res.json();
+        alert(data.poruka);
+        if (res.ok) ucitajTermine();
+    }
+
+    async function ucitajRecenzije() {
+        const res = await fetch('/recenzije');
+        const recenzije = await res.json();
+        const container = document.getElementById('recenzije-lista');
+        container.innerHTML = "";
+
+        if (recenzije.length === 0) {
+            container.innerHTML = '<p style="color: #aaa; text-align: center;">Nema recenzija. Budi prvi!</p>';
+            return;
+        }
+
+        recenzije.forEach(r => {
+            const div = document.createElement('div');
+            div.className = 'recenzija-card';
+            div.innerHTML = `
+                <div class="recenzija-header">
+                    <span>${r.ime}</span>
+                    <span class="zvezdice">${'⭐'.repeat(r.ocena)}</span>
+                </div>
+                <div style="color: #ddd;">"${r.komentar}"</div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    async function ostaviRecenziju() {
+        const ime = document.getElementById('rec-ime').value;
+        const ocena = document.getElementById('rec-ocena').value;
+        const komentar = document.getElementById('rec-komentar').value;
+
+        if (!ime || !komentar) {
+            alert("Unesite ime i komentar.");
+            return;
+        }
+
+        const res = await fetch('/ostavi-recenziju', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ime, ocena, komentar })
+        });
+
+        const data = await res.json();
+        alert(data.poruka);
+        if (res.ok) {
+            document.getElementById('rec-ime').value = "";
+            document.getElementById('rec-komentar').value = "";
+            ucitajRecenzije();
+        }
+    }
+
+    ucitajRecenzije();
+</script>
+
+</body>
+</html>
