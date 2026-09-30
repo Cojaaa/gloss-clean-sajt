@@ -5,124 +5,137 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gloss Clean - Zakazivanje</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0b0e14; color: white; padding: 20px; max-width: 500px; margin: auto; }
-        .logo-container { text-align: center; margin-bottom: 20px; }
-        .logo-container img { max-width: 200px; height: auto; border-radius: 50%; border: 2px solid #00d4ff; box-shadow: 0 0 15px rgba(0, 212, 255, 0.3); }
-        h1, h2, h3 { text-align: center; margin-bottom: 20px; }
-        .slogan { text-align: center; font-style: italic; color: #00d4ff; margin-top: -15px; margin-bottom: 25px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #06080e; color: #ffffff; padding: 30px 15px; }
         
-        .card { background-color: #121824; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .card-title { font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #38bdf8; margin-bottom: 15px; }
-
-        /* Stil za opcije usluga (checkbox kartice) */
-        .usluga-option { display: flex; align-items: center; background-color: #1a2234; border: 1px solid #2a364f; padding: 14px 16px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s ease; }
-        .usluga-option:hover { border-color: #38bdf8; background-color: #212c42; }
-        .usluga-option input[type="checkbox"] { width: 18px; height: 18px; margin-right: 12px; accent-color: #38bdf8; cursor: pointer; }
-        .usluga-text { font-size: 15px; font-weight: 500; color: #f1f5f9; }
-
-        label { display: block; margin-top: 15px; font-weight: bold; font-size: 14px; color: #94a3b8; }
-        input, textarea { width: 100%; padding: 12px; margin-top: 6px; box-sizing: border-box; background-color: #1a2234; color: white; border: 1px solid #2a364f; border-radius: 8px; font-size: 14px; }
-        input:focus, textarea:focus { border-color: #38bdf8; outline: none; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .logo-ring { width: 110px; height: 110px; border-radius: 50%; border: 2px solid #2563eb; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(37, 99, 235, 0.3); margin-bottom: 15px; overflow: hidden; background: #000; }
+        .logo-ring img { width: 100%; height: 100%; object-fit: cover; }
         
-        .termini { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-        .termin { padding: 10px; background-color: #1a2234; border: 1px solid #2a364f; cursor: pointer; border-radius: 8px; text-align: center; flex: 1 1 28%; font-size: 14px; }
-        .termin.selekcija { background-color: #38bdf8; border-color: #0284c7; color: #000; font-weight: bold; }
-        .termin.zauzet { background-color: #334155; text-decoration: line-through; cursor: not-allowed; opacity: 0.4; }
-        
-        button { width: 100%; padding: 14px; margin-top: 20px; background-color: #38bdf8; color: #0f172a; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; transition: background-color 0.2s; }
-        button:hover { background-color: #0284c7; color: white; }
+        .brand-title { font-size: 32px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #ffffff; }
+        .brand-title span { color: #2563eb; }
 
-        .recenzija-card { background: #1a2234; padding: 14px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #2a364f; }
-        .recenzija-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 6px; }
-        .zvezdice { color: #fbbf24; }
+        .main-card { max-width: 580px; margin: 0 auto; background-color: #0d121f; border: 1px solid #1a233a; border-radius: 16px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        .section-title { font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #3b82f6; text-transform: uppercase; margin-top: 20px; margin-bottom: 15px; }
+        .section-title:first-child { margin-top: 0; }
+
+        /* Usluge stil */
+        .usluga-card { display: flex; align-items: center; background-color: #111827; border: 1px solid #1e293b; padding: 16px 20px; border-radius: 10px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .usluga-card:hover { border-color: #2563eb; background-color: #162032; }
+        .usluga-card input[type="checkbox"] { width: 20px; height: 20px; margin-right: 15px; accent-color: #2563eb; cursor: pointer; }
+        .usluga-text { font-size: 15px; font-weight: 600; color: #f3f4f6; }
+
+        label.field-label { display: block; margin-top: 15px; font-size: 13px; font-weight: 600; color: #9ca3af; margin-bottom: 6px; }
+        input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 14px 16px; background-color: #111827; color: #ffffff; border: 1px solid #1e293b; border-radius: 10px; font-size: 15px; outline: none; transition: border-color 0.2s; }
+        input:focus, textarea:focus, select:focus { border-color: #2563eb; }
+
+        .termini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+        .termin { padding: 12px; background-color: #111827; border: 1px solid #1e293b; cursor: pointer; border-radius: 8px; text-align: center; font-size: 14px; font-weight: 600; color: #e5e7eb; transition: all 0.2s; }
+        .termin:hover { border-color: #2563eb; }
+        .termin.selekcija { background-color: #2563eb; border-color: #3b82f6; color: #ffffff; }
+        .termin.zauzet { background-color: #1f2937; color: #4b5563; text-decoration: line-through; cursor: not-allowed; border-color: transparent; }
+
+        button.btn-submit { width: 100%; padding: 16px; margin-top: 25px; background-color: #2563eb; color: #ffffff; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: background-color 0.2s; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+        button.btn-submit:hover { background-color: #1d4ed8; }
+
+        .divider { height: 1px; background-color: #1a233a; margin: 30px 0; }
+
+        .recenzija-card { background: #111827; padding: 15px; border-radius: 10px; margin-bottom: 12px; border: 1px solid #1e293b; }
+        .recenzija-header { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px; font-size: 14px; }
+        .zvezdice { color: #f59e0b; }
     </style>
 </head>
 <body>
 
-    <div class="logo-container">
-        <img src="/static/logo.png" alt="Gloss Clean Logo">
+    <div class="header">
+        <div class="logo-ring">
+            <img src="/static/logo.png" alt="Gloss Clean Logo">
+        </div>
+        <div class="brand-title">GLOSS <span>CLEAN</span></div>
     </div>
 
-    <h1>Gloss Clean</h1>
-    <p class="slogan">Čisto. Sveže. Kao novo.</p>
-
-    <div class="card">
-        <div class="card-title">1. Izaberite uslugu (možete više)</div>
+    <div class="main-card">
+        <div class="section-title">1. Izaberite uslugu</div>
         
-        <label class="usluga-option">
+        <label class="usluga-card">
             <input type="checkbox" name="usluga" value="Ugaona garnitura">
             <span class="usluga-text">Ugaona garnitura</span>
         </label>
 
-        <label class="usluga-option">
+        <label class="usluga-card">
             <input type="checkbox" name="usluga" value="Stolica">
             <span class="usluga-text">Stolica</span>
         </label>
 
-        <label class="usluga-option">
+        <label class="usluga-card">
             <input type="checkbox" name="usluga" value="Tepih">
             <span class="usluga-text">Tepih</span>
         </label>
 
-        <label class="usluga-option">
+        <label class="usluga-card">
             <input type="checkbox" name="usluga" value="Dvosed">
             <span class="usluga-text">Dvosed</span>
         </label>
 
-        <label class="usluga-option">
+        <label class="usluga-card">
             <input type="checkbox" name="usluga" value="Trosed">
             <span class="usluga-text">Trosed</span>
         </label>
 
-        <label class="usluga-option">
+        <label class="usluga-card">
             <input type="checkbox" name="usluga" value="Bračni krevet">
             <span class="usluga-text">Bračni krevet</span>
         </label>
 
-        <label class="usluga-option">
+        <label class="usluga-card">
             <input type="checkbox" name="usluga" value="Ostalo">
             <span class="usluga-text">Ostalo</span>
         </label>
-    </div>
 
-    <div class="card">
-        <div class="card-title">2. Podaci za zakazivanje</div>
+        <div class="divider"></div>
 
-        <label>Ime i prezime:</label>
-        <input type="text" id="ime" placeholder="Vaše ime">
+        <div class="section-title">2. Podaci za zakazivanje</div>
 
-        <label>Broj telefona:</label>
+        <label class="field-label">Ime i prezime:</label>
+        <input type="text" id="ime" placeholder="Vaše ime i prezime">
+
+        <label class="field-label">Broj telefona:</label>
         <input type="text" id="telefon" placeholder="06x xxx xxxx">
 
-        <label>Datum:</label>
+        <label class="field-label">Izaberite datum:</label>
         <input type="date" id="datum" onchange="ucitajTermine()">
 
-        <label>Izaberite termin:</label>
+        <label class="field-label">Izaberite termin:</label>
         <div class="termini" id="termini-container">
-            <p style="color: #64748b; text-align: center; width: 100%; font-size: 13px;">Izaberite datum iznad</p>
+            <p style="color: #6b7280; grid-column: span 3; text-align: center; padding: 10px; font-size: 13px;">Prvo izaberite datum</p>
         </div>
 
-        <button onclick="rezervisi()">Potvrdi rezervaciju</button>
-    </div>
+        <button class="btn-submit" onclick="rezervisi()">Potvrdi rezervaciju</button>
 
-    <div class="card">
-        <div class="card-title">Utisci klijenata</div>
+        <div class="divider"></div>
+
+        <div class="section-title">Utisci klijenata</div>
         <div id="recenzije-lista">
-            <p style="color: #64748b; text-align: center; font-size: 13px;">Učitavanje recenzija...</p>
+            <p style="color: #6b7280; text-align: center; font-size: 13px;">Učitavanje recenzija...</p>
         </div>
 
-        <h3 style="font-size: 15px; margin-top: 20px; text-align: left;">Ostavite recenziju</h3>
+        <div class="section-title" style="margin-top: 25px;">Ostavite recenziju</div>
         <input type="text" id="rec-ime" placeholder="Vaše ime">
-        <label>Ocena:</label>
-        <select id="rec-ocena" style="width:100%; padding:12px; margin-top:6px; background:#1a2234; color:white; border:1px solid #2a364f; border-radius:8px;">
+        
+        <label class="field-label">Ocena:</label>
+        <select id="rec-ocena">
             <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
             <option value="4">⭐⭐⭐⭐ (4/5)</option>
             <option value="3">⭐⭐⭐ (3/5)</option>
             <option value="2">⭐⭐ (2/5)</option>
             <option value="1">⭐ (1/5)</option>
         </select>
-        <textarea id="rec-komentar" rows="3" placeholder="Vaš komentar..."></textarea>
-        <button onclick="ostaviRecenziju()">Pošalji recenziju</button>
+        
+        <label class="field-label">Komentar:</label>
+        <textarea id="rec-komentar" rows="3" placeholder="Vaš utisak..."></textarea>
+        
+        <button class="btn-submit" style="background-color: #1f2937; box-shadow: none;" onclick="ostaviRecenziju()">Pošalji recenziju</button>
     </div>
 
 <script>
@@ -200,7 +213,7 @@
         container.innerHTML = "";
 
         if (recenzije.length === 0) {
-            container.innerHTML = '<p style="color: #64748b; text-align: center; font-size: 13px;">Nema recenzija. Budi prvi!</p>';
+            container.innerHTML = '<p style="color: #6b7280; text-align: center; font-size: 13px;">Nema recenzija. Budi prvi!</p>';
             return;
         }
 
@@ -212,7 +225,7 @@
                     <span>${r.ime}</span>
                     <span class="zvezdice">${'⭐'.repeat(r.ocena)}</span>
                 </div>
-                <div style="color: #cbd5e1; font-size: 14px;">"${r.komentar}"</div>
+                <div style="color: #d1d5db; font-size: 14px;">"${r.komentar}"</div>
             `;
             container.appendChild(div);
         });
