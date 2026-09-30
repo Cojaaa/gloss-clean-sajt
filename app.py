@@ -31,12 +31,15 @@ def sacuvaj_podatke(fajl, podaci):
 
 def posalji_u_whatsapp_grupu(tekst_poruke):
   """Šalje poruku direktno u WhatsApp grupu"""
-  url = f"https://api.green-api.com/waInstance{ID_INSTANCE}/sendMessage/{API_TOKEN}"
+  # Ispravljen host na 7107.api.greenapi.com
+  url = f"https://7107.api.greenapi.com/waInstance{ID_INSTANCE}/sendMessage/{API_TOKEN}"
   payload = {"chatId": GROUP_ID, "message": tekst_poruke}
   headers = {"Content-Type": "application/json"}
 
   try:
-    requests.post(url, json=payload, timeout=5)
+    res = requests.post(url, json=payload, headers=headers, timeout=10)
+    print(f"Green API status code: {res.status_code}")
+    print(f"Green API response: {res.text}")
   except Exception as e:
     print(f"Greška pri slanju WhatsApp poruke: {e}")
 
@@ -91,7 +94,7 @@ def rezervisi():
       f"🚨 NOVA REZERVACIJA! 🚨\n\n"
       f"👤 Klijent: {ime}\n"
       f"📞 Telefon: {telefon}\n"
-      f"🛠️️ Usluga: {usluga}\n"
+      f"🛠️ Usluga: {usluga}\n"
       f"📅 Datum: {datum}\n"
       f"⏰ Termin: {vreme}"
   )
