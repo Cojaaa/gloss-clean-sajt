@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gloss Clean - Zakazivanje</title>
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #06080e; color: #ffffff; padding: 30px 15px; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #06080e; color: #ffffff; padding: 30px 15px; }
         
         .header { text-align: center; margin-bottom: 30px; }
         .logo-ring { width: 110px; height: 110px; border-radius: 50%; border: 2px solid #2563eb; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(37, 99, 235, 0.3); margin-bottom: 15px; overflow: hidden; background: #000; }
@@ -20,14 +24,14 @@
         .section-title { font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #3b82f6; text-transform: uppercase; margin-top: 20px; margin-bottom: 15px; }
         .section-title:first-child { margin-top: 0; }
 
-        /* Usluge stil */
+        /* Usluge stil i moderni font */
         .usluga-card { display: flex; align-items: center; background-color: #111827; border: 1px solid #1e293b; padding: 16px 20px; border-radius: 10px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s ease; }
         .usluga-card:hover { border-color: #2563eb; background-color: #162032; }
         .usluga-card input[type="checkbox"] { width: 20px; height: 20px; margin-right: 15px; accent-color: #2563eb; cursor: pointer; }
-        .usluga-text { font-size: 15px; font-weight: 600; color: #f3f4f6; }
+        .usluga-text { font-size: 15px; font-weight: 600; color: #f3f4f6; letter-spacing: 0.3px; }
 
         label.field-label { display: block; margin-top: 15px; font-size: 13px; font-weight: 600; color: #9ca3af; margin-bottom: 6px; }
-        input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 14px 16px; background-color: #111827; color: #ffffff; border: 1px solid #1e293b; border-radius: 10px; font-size: 15px; outline: none; transition: border-color 0.2s; }
+        input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 14px 16px; background-color: #111827; color: #ffffff; border: 1px solid #1e293b; border-radius: 10px; font-size: 15px; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s; }
         input:focus, textarea:focus, select:focus { border-color: #2563eb; }
 
         .termini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
@@ -36,7 +40,7 @@
         .termin.selekcija { background-color: #2563eb; border-color: #3b82f6; color: #ffffff; }
         .termin.zauzet { background-color: #1f2937; color: #4b5563; text-decoration: line-through; cursor: not-allowed; border-color: transparent; }
 
-        button.btn-submit { width: 100%; padding: 16px; margin-top: 25px; background-color: #2563eb; color: #ffffff; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: background-color 0.2s; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+        button.btn-submit { width: 100%; padding: 16px; margin-top: 25px; background-color: #2563eb; color: #ffffff; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: background-color 0.2s; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
         button.btn-submit:hover { background-color: #1d4ed8; }
 
         .divider { height: 1px; background-color: #1a233a; margin: 30px 0; }
@@ -86,6 +90,11 @@
         <label class="usluga-card">
             <input type="checkbox" name="usluga" value="Bračni krevet">
             <span class="usluga-text">Bračni krevet</span>
+        </label>
+
+        <label class="usluga-card">
+            <input type="checkbox" name="usluga" value="Auto">
+            <span class="usluga-text">Auto</span>
         </label>
 
         <label class="usluga-card">
